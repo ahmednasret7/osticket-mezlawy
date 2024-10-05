@@ -1,0 +1,6 @@
+/scp/config.php
+/include/ost-config.php
+/upload/
+/logs/
+*.log
+*.cache
