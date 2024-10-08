@@ -1,0 +1,29 @@
+name: Deploy osTicket
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_tag:
+        description: 'Docker Image Tag (default: latest)'
+        required: false
+        default: 'latest'
+      deploy_server:
+        description: 'Deploy to Contabo server? (yes/no)'
+        required: false
+        default: 'yes'
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Sync osTicket files to server
+        run: |
+          rsync -avz --delete ./ Administrator@82.201.194.178:C:/inetpub/wwwroot/osTicket/
